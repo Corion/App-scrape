@@ -23,9 +23,11 @@ specifying CSS or XPath selectors.
 
     # Print page title
     scrape.pl http://perl.org title
+    # The Perl Programming Language - www.perl.org
 
     # Print links with titles, make links absolute
     scrape.pl http://perl.org a //a/@href --uri=2
+    # ...
 
 =head1 DESCRIPTION
 
