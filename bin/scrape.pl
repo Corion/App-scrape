@@ -10,7 +10,12 @@ $VERSION = '0.01';
 
 =head1 NAME
 
-    scrape.pl
+scrape.pl - simple HTML scraping from the command line
+
+=head1 ABSTRACT
+
+This is a simple program to extract data from HTML by
+specifying CSS or XPath selectors.
 
 =head1 SYNOPSIS
 
@@ -105,3 +110,27 @@ for my $idx (0.. $#{ $rows[0] }) {
 };
 
 $tree->delete;
+
+=head1 REPOSITORY
+
+The public repository of this module is 
+L<http://github.com/Corion/App-scrape>.
+
+=head1 SUPPORT
+
+The public support forum of this program is
+L<http://perlmonks.org/>.
+
+=head1 AUTHOR
+
+Max Maischein C<corion@cpan.org>
+
+=head1 COPYRIGHT (c)
+
+Copyright 2011-2011 by Max Maischein C<corion@cpan.org>.
+
+=head1 LICENSE
+
+This module is released under the same terms as Perl itself.
+
+=cut
