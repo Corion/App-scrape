@@ -58,18 +58,12 @@ if ($url eq '-') {
     $html = get $url;
 };
 
-# Now munge the XPath expression to select only the nodes we really want
-#$nodepart ||= 'text';
-#if ($nodepart =~ /^\@/) {
-#    $selector = "$selector/$nodepart";
-#};
-
 my $tree = HTML::TreeBuilder::XPath->new;
 $tree->parse($html);
 $tree->eof;
 
-# now fetch all "rows"
-
+# now fetch all "rows" from the page. We do this once to avoid
+# fetching a page multiple times
 my @rows;
 
 my $rowidx=0;
