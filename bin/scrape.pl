@@ -12,11 +12,20 @@ use Pod::Usage;
 
 =head1 SYNOPSIS
 
+    scrape.pl URL selector selector ...
+
     # Print page title
     scrape.pl http://perl.org title
 
     # Print links with titles, make links absolute
     scrape.pl http://perl.org a //a/@href --uri=2
+
+=head1 DESCRIPTION
+
+This program fetches an HTML page and extracts nodes
+matched by XPath or CSS selectors from it.
+
+If URL is C<->, input will be read from STDIN.
 
 =head1 OPTIONS
 
