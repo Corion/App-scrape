@@ -5,6 +5,8 @@ use HTML::Selector::XPath 'selector_to_xpath';
 use LWP::Simple qw(get);
 use Getopt::Long;
 use Pod::Usage;
+use vars qw($VERSION);
+$VERSION = '0.01';
 
 =head1 NAME
 
