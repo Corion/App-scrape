@@ -5,12 +5,41 @@ use HTML::Selector::XPath 'selector_to_xpath';
 use LWP::Simple qw(get);
 use Getopt::Long;
 use Pod::Usage;
-use Data::Dumper;
+
+=head1 NAME
+
+    scrape.pl
+
+=head1 SYNOPSIS
+
+    # Print page title
+    scrape.pl http://perl.org title
+
+    # Print links with titles, make links absolute
+    scrape.pl http://perl.org a //a/@href --uri=2
+
+=head1 OPTIONS
+
+=over 4
+
+=item B<--sep>
+
+Separator character to use for columns. Default is tab.
+
+=item B<--uri> COLUMNS
+
+Numbers of columns to convert into absolute URIs
+
+=back
+
+=cut
 
 GetOptions(
+    'help|h' => \my $help,
     'uri:s' => \my @make_uri,
     'sep:s' => \my $sep,
 ) or pod2usage(2);
+pod2usage(1) if $help;
 
 # make_uri can be a comma-separated list of columns to map
 # The index starts at one
