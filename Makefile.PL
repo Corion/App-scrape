@@ -6,7 +6,7 @@ use ExtUtils::MakeMaker;
 # the contents of the Makefile that is written.
 
 # I should maybe use something like Shipwright...
-#regen_README('lib/WWW/Mechanize/Firefox.pm');
+regen_README('bin/scrape.pl');
 #regen_EXAMPLES();
 
 WriteMakefile1(
