@@ -15,7 +15,7 @@ scrape.pl - simple HTML scraping from the command line
 =head1 ABSTRACT
 
 This is a simple program to extract data from HTML by
-specifying CSS or XPath selectors.
+specifying CSS3 or XPath selectors.
 
 =head1 SYNOPSIS
 
@@ -27,7 +27,9 @@ specifying CSS or XPath selectors.
 
     # Print links with titles, make links absolute
     scrape.pl http://perl.org a //a/@href --uri=2
-    # ...
+    
+    # Print all links to JPG images, make links absolute
+    scrape.pl http://perl.org a[@href=$"jpg"] --uri=1
 
 =head1 DESCRIPTION
 
