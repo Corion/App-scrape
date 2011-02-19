@@ -29,7 +29,7 @@ specifying CSS3 or XPath selectors.
     scrape.pl http://perl.org a //a/@href --uri=2
     
     # Print all links to JPG images, make links absolute
-    scrape.pl http://perl.org a[@href=$"jpg"] --uri=1
+    scrape.pl http://perl.org a[@href=$"jpg"]
 
 =head1 DESCRIPTION
 
@@ -48,7 +48,13 @@ Separator character to use for columns. Default is tab.
 
 =item B<--uri> COLUMNS
 
-Numbers of columns to convert into absolute URIs
+Numbers of columns to convert into absolute URIs, if the
+known attributes do not everything you want.
+
+=item B<--no-uri>
+
+Switches off the automatic translation to absolute
+URIs for known attributes like C<href> and C<src>.
 
 =back
 
@@ -57,6 +63,7 @@ Numbers of columns to convert into absolute URIs
 GetOptions(
     'help|h' => \my $help,
     'uri:s' => \my @make_uri,
+    'no-uri' => \my $no_known_uri,
     'sep:s' => \my $sep,
 ) or pod2usage(2);
 pod2usage(1) if $help;
@@ -86,15 +93,22 @@ $tree->eof;
 # fetching a page multiple times
 my @rows;
 
+my %known_uri = (
+    'href' => 1, # a@href
+    'src'  => 1, # img@src , script@src
+);
+
 my $rowidx=0;
 for my $selector (@ARGV) {
     if ($selector !~ m!^/!) {
         $selector = selector_to_xpath( $selector );
     };
     my @nodes;
-    if ($selector !~ m!/\@\w+$!) {
+    if ($selector !~ m!/\@(\w+)$!) {
         @nodes = map { $_->as_trimmed_text } $tree->findnodes($selector);
     } else {
+        my ($attr) = $1;
+        $make_uri{ $rowidx } ||= (($known_uri{ lc $attr }) and ! $no_known_uri);
         @nodes = $tree->findvalues($selector);
     };
     
