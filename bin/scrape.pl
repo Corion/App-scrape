@@ -6,7 +6,7 @@ use LWP::Simple qw(get);
 use Getopt::Long;
 use Pod::Usage;
 use vars qw($VERSION);
-$VERSION = '0.01';
+$VERSION = '0.02';
 
 =head1 NAME
 
