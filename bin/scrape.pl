@@ -100,15 +100,20 @@ my %known_uri = (
 
 my $rowidx=0;
 for my $selector (@ARGV) {
+    my $fetch_attr;
+    if ($selector =~ s!(?:/?|\s*)\@(\w+)$!!) {
+        $fetch_attr = $1;
+    };
+    
+    $selector =~ s/\s+$//;
     if ($selector !~ m!^/!) {
         $selector = selector_to_xpath( $selector );
     };
     my @nodes;
-    if ($selector !~ m!/\@(\w+)$!) {
+    if (! defined $fetch_attr) {
         @nodes = map { $_->as_trimmed_text } $tree->findnodes($selector);
     } else {
-        my ($attr) = $1;
-        $make_uri{ $rowidx } ||= (($known_uri{ lc $attr }) and ! $no_known_uri);
+        $make_uri{ $rowidx } ||= (($known_uri{ lc $fetch_attr }) and ! $no_known_uri);
         @nodes = $tree->findvalues($selector);
     };
     
