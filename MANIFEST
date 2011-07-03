@@ -1,5 +1,6 @@
 .gitignore
 bin/scrape.pl
+bin/scrape2rss.pl
 Changes
 lib/App/scrape.pm
 lib/HTML/Scrape/Twig.pm
