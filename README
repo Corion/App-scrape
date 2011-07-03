@@ -2,7 +2,7 @@ NAME
     scrape.pl - simple HTML scraping from the command line
 
 ABSTRACT
-    This is a simple program to extract data from HTML by specifying CSS or
+    This is a simple program to extract data from HTML by specifying CSS3 or
     XPath selectors.
 
 SYNOPSIS
@@ -10,9 +10,13 @@ SYNOPSIS
 
         # Print page title
         scrape.pl http://perl.org title
+        # The Perl Programming Language - www.perl.org
 
         # Print links with titles, make links absolute
         scrape.pl http://perl.org a //a/@href --uri=2
+    
+        # Print all links to JPG images, make links absolute
+        scrape.pl http://perl.org a[@href=$"jpg"]
 
 DESCRIPTION
     This program fetches an HTML page and extracts nodes matched by XPath or
@@ -25,7 +29,12 @@ OPTIONS
         Separator character to use for columns. Default is tab.
 
     --uri COLUMNS
-        Numbers of columns to convert into absolute URIs
+        Numbers of columns to convert into absolute URIs, if the known
+        attributes do not everything you want.
+
+    --no-uri
+        Switches off the automatic translation to absolute URIs for known
+        attributes like `href' and `src'.
 
 REPOSITORY
     The public repository of this module is
