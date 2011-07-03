@@ -22,30 +22,58 @@ specifying CSS3 or XPath selectors.
 
     scrape2rss.pl URL OPTIONS
 
+    scrape2rss.pl
+        http://conferences.yapceurope.org/gpw2011/news
+        --feed-title "GPW 2011 Atom Feed"
+        --title "h3 a"
+        --summary "h3+p+p"
+        --permalink "h3 a@href"
+        --date "h3+p em"
+        --date-fmt "%d/%m/%y %H:%M"
+        -o gpw2011.de.atom 
+
 =head1 DESCRIPTION
 
-This program fetches an HTML page and extracts nodes
-matched by XPath or CSS selectors from it.
+This program fetches an HTML page and creates
+an RSS feed from it. The elements that are turned
+into the RSS feed are specified as CSS or XPath selectors.
 
-If URL is C<->, input will be read from STDIN.
+If the URL is C<->, input will be read from STDIN.
 
 =head1 OPTIONS
 
 =over 4
 
-=item B<--sep>
+=item B<--title>
 
-Separator character to use for columns. Default is tab.
+Selector for the entry title
 
-=item B<--uri> COLUMNS
+=item B<--summary>
 
-Numbers of columns to convert into absolute URIs, if the
-known attributes do not everything you want.
+Selector for the entry summary
 
-=item B<--no-uri>
+=item B<--permalink>
 
-Switches off the automatic translation to absolute
-URIs for known attributes like C<href> and C<src>.
+Selector for the entry permalink
+
+=item B<--date>
+
+Selector for the entry publication date
+
+=item B<--date-fmt>
+
+C<sprintf> format that the entry publication date is in
+for conversion into a proper Atom timestamp
+
+=item B<--outfile>
+
+Name of the output file
+
+Default is STDOUT
+
+=item B<--debug>
+
+Output information in clear text
 
 =back
 
