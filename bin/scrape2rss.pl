@@ -134,19 +134,21 @@ my $feed = XML::Atom::SimpleFeed->new(
 );
 
 for my $item (@rows) {
-    my $updated = $item->{date} || $updated;
+    my $item_updated = $item->{date} || $updated;
     
     # Now, extract the information, just in case there is "garbage"
     # around the string
     (my $extr = $date_fmt) =~ s!%\w!\\d+!g;
     $extr = qr/($extr)/;
     
-    $updated =~ $extr
-        or warn "Is [$updated] a valid date?";
-    $updated = $1;
-    warn $updated;
+    if ($item_updated =~ /$extr/) {
+        $item_updated = $1;
+    } else {
+        or warn "Is [$updated] a valid date?\n";
+        $item_updated = $updated;
+    };
     
-    my $ts = Time::Piece->strptime( $updated, $date_fmt );
+    my $ts = Time::Piece->strptime( $item_updated, $date_fmt );
     $updated = $ts->strftime('%Y-%m-%dT%H:%M:%SZ');
 
     my $enc_url = $item->{permalink};
@@ -156,7 +158,7 @@ for my $item (@rows) {
         link      => $enc_url,
         id        => $enc_url,
         summary   => $item->{summary},
-        updated   => $updated,
+        updated   => $item_updated,
         category  => ($item->{category} || $category),
     );
     
