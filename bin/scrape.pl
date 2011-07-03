@@ -1,7 +1,6 @@
 #!perl -w
 use strict;
-use HTML::TreeBuilder::XPath;
-use HTML::Selector::XPath 'selector_to_xpath';
+use App::scrape 'scrape';
 use LWP::Simple qw(get);
 use Getopt::Long;
 use Pod::Usage;
@@ -85,49 +84,19 @@ if ($url eq '-') {
     $html = get $url;
 };
 
-my $tree = HTML::TreeBuilder::XPath->new;
-$tree->parse($html);
-$tree->eof;
 
 # now fetch all "rows" from the page. We do this once to avoid
 # fetching a page multiple times
-my @rows;
+my @rows = scrape($html, \@ARGV, {
+    make_uri => \%make_uri,
+    no_known_uri => $no_known_uri,
+    base => $url,
+});
 
-my %known_uri = (
-    'href' => 1, # a@href
-    'src'  => 1, # img@src , script@src
-);
-
-my $rowidx=0;
-for my $selector (@ARGV) {
-    if ($selector !~ m!^/!) {
-        $selector = selector_to_xpath( $selector );
-    };
-    my @nodes;
-    if ($selector !~ m!/\@(\w+)$!) {
-        @nodes = map { $_->as_trimmed_text } $tree->findnodes($selector);
-    } else {
-        my ($attr) = $1;
-        $make_uri{ $rowidx } ||= (($known_uri{ lc $attr }) and ! $no_known_uri);
-        @nodes = $tree->findvalues($selector);
-    };
-    
-    if ($make_uri{ $rowidx }) {
-        @nodes = map { URI->new_abs( $_, $url )->as_string } @nodes;
-    };
-    
-    $rows[ $rowidx++ ] = \@nodes;
-};
-
-for my $idx (0.. $#{ $rows[0] }) {
-    print join $sep, map { 
-            $rows[$_]->[$idx]
-        } 0..$#rows;
-    
+for my $row (@rows) {
+    print join $sep, @$row;
     print "\n";
 };
-
-$tree->delete;
 
 =head1 REPOSITORY
 
