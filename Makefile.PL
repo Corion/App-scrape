@@ -22,6 +22,7 @@ WriteMakefile1(
     'NAME'          => 'App::scrape',
     'LICENSE'       => 'perl',
     'VERSION_FROM'  => 'lib/App/scrape.pm', # finds $VERSION
+    'EXE_FILES'     => ['bin/scrape.pl', 'bin/scrape2rss.pl'],
     'PREREQ_PM'     => { 
                         'HTML::TreeBuilder::XPath' => 0, # the first DOM we implement
                         'HTML::Selector::XPath' => 0,

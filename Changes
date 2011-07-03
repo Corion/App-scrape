@@ -1,2 +1,6 @@
+0.02 to be released
+    . added scrape2rss RSS generator
+    . moved scrape logic into module
+
 0.01 to be done
     . Released unto a propably suspecting audience

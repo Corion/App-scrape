@@ -79,7 +79,7 @@ my $html;
 if ($url eq '-') {
     # read from STDIN
     local $/;
-    $html = <>;
+    $html = <STDIN>;
 } else {
     $html = get $url;
 };
