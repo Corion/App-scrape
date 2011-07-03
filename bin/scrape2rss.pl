@@ -121,7 +121,7 @@ for my $item (@rows) {
     my $ts = Time::Piece->strptime( $updated, $date_fmt );
     $updated = $ts->strftime('%Y-%m-%dT%H:%M:%SZ');
 
-    my $enc_url = URI::Escape::uri_escape($item->{permalink});
+    my $enc_url = $item->{permalink};
     
     my %info = (
         title     => $item->{title},
