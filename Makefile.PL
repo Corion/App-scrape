@@ -26,6 +26,7 @@ WriteMakefile1(
     'PREREQ_PM'     => { 
                         'HTML::TreeBuilder::XPath' => 0, # the first DOM we implement
                         'HTML::Selector::XPath' => 0,
+                        'XML::Atom::SimpleFeed' => 0, # for scrape2rss
                         'LWP::Simple' => 0, # for page fetching
                         'Time::Piece' => 0, # for date parsing
                         'Exporter' => 0,
