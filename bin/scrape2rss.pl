@@ -20,17 +20,7 @@ specifying CSS3 or XPath selectors.
 
 =head1 SYNOPSIS
 
-    scrape.pl URL selector selector ...
-
-    # Print page title
-    scrape.pl http://perl.org title
-    # The Perl Programming Language - www.perl.org
-
-    # Print links with titles, make links absolute
-    scrape.pl http://perl.org a //a/@href --uri=2
-    
-    # Print all links to JPG images, make links absolute
-    scrape.pl http://perl.org a[@href=$"jpg"]
+    scrape2rss.pl URL OPTIONS
 
 =head1 DESCRIPTION
 
@@ -77,7 +67,7 @@ GetOptions(
 pod2usage(1) if $help;
 
 $feed_url ||= $outfile || 'feed.atom';
-$title ||= 'Atom feed';
+$feed_title ||= 'Atom feed';
 $category ||= '';
 
 # Now determine where we get the HTML to scrape from:
@@ -107,7 +97,7 @@ my @rows = scrape($html, {
 my $updated = Time::Piece->gmtime->strftime('%Y-%m-%dT%H:%M:%SZ');
 
 my $feed = XML::Atom::SimpleFeed->new(
-    title   => $title,
+    title   => $feed_title,
     link    => $feed_url,
     link    => { rel => 'self', href => $feed_url, },
     author  => 'scrape2rss',
