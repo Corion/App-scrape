@@ -21,13 +21,17 @@ WriteMakefile1(
     #},
     'NAME'          => 'App::scrape',
     'LICENSE'       => 'perl',
-    'VERSION_FROM'  => 'bin/scrape.pl', # finds $VERSION
+    'VERSION_FROM'  => 'lib/App/scrape.pm', # finds $VERSION
     'PREREQ_PM'     => { 
                         'HTML::TreeBuilder::XPath' => 0, # the first DOM we implement
                         'HTML::Selector::XPath' => 0,
                         'LWP::Simple' => 0, # for page fetching
+                        'Time::Piece' => 0, # for date parsing
+                        'Exporter' => 0,
+                        'Getopt::Long' => 0,
+                        'Pod::Usage' => 0,
                       }, # e.g., Module::Name => 1.1
-    ABSTRACT_FROM   => 'bin/scrape.pl', # retrieve abstract from module
+    ABSTRACT_FROM   => 'lib/App/scrape.pm', # retrieve abstract from module
     AUTHOR          => 'Max Maischein <corion@cpan.org>',
 );
 

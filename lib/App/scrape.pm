@@ -2,8 +2,6 @@ package App::scrape;
 use strict;
 use HTML::TreeBuilder::XPath;
 use HTML::Selector::XPath 'selector_to_xpath';
-use Getopt::Long;
-use Pod::Usage;
 use Exporter 'import';
 
 use vars qw($VERSION @EXPORT_OK);
@@ -93,22 +91,27 @@ sub scrape {
 
     my $rowidx=0;
     for my $selector (@selectors) {
+        my ($attr);
+        my $s = $selector;
+        if ($selector =~ s!/?\@(\w+)$!!) {
+            $attr = $1;
+        };
         if ($selector !~ m!^/!) {
             $selector = selector_to_xpath( $selector );
         };
         my @nodes;
-        if ($selector !~ m!/\@(\w+)$!) {
+        if (! defined $attr) {
             @nodes = map { $_->as_trimmed_text } $tree->findnodes($selector);
         } else {
-            my ($attr) = $1;
             $make_uri{ $rowidx } ||= (($known_uri{ lc $attr }) and ! $options->{no_known_uri});
-            @nodes = $tree->findvalues($selector);
+            @nodes = $tree->findvalues("$selector/\@$attr");
         };
         
         if ($make_uri{ $rowidx }) {
             @nodes = map { URI->new_abs( $_, $options->{base} )->as_string } @nodes;
         };
         push @rows, \@nodes;
+        $rowidx++;
     };
     
     # Now convert the result from rows to columns
