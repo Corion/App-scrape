@@ -3,7 +3,6 @@ bin/scrape.pl
 bin/scrape2rss.pl
 Changes
 lib/App/scrape.pm
-lib/HTML/Scrape/Twig.pm
 Makefile.PL
 MANIFEST			This list of files
 MANIFEST.skip
