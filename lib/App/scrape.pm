@@ -1,5 +1,6 @@
 package App::scrape;
 use strict;
+use URI;
 use HTML::TreeBuilder::XPath;
 use HTML::Selector::XPath 'selector_to_xpath';
 use Exporter 'import';
@@ -20,14 +21,14 @@ specifying CSS3 or XPath selectors.
 
 =head1 SYNOPSIS
 
-    use App::scrape;
+    use App::scrape 'scrape';
     use LWP::Simple 'get';
     use Data::Dumper;
     
     my $html = get('http://perlmonks.org');
     my @posts = scrape(
         $html,
-        ['a','a@href']
+        ['a','a@href'],
         { 
             absolute => [qw[href src rel]],
             base => 'http://perlmonks.org',
