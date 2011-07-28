@@ -13,4 +13,10 @@ sub check {
     like( $output, qr/$_ syntax OK/, "$_ compiles" )
 }
 
-find({wanted => \&check, no_chdir => 1}, 'examples');
+for (qw(examples bin)) {
+    if (-d $_) {
+        find({wanted => \&check, no_chdir => 1}, $_);
+    }
+};
+
+ok "Did not die";
