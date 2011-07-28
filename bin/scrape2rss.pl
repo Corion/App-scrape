@@ -100,6 +100,8 @@ $category ||= '';
 
 # Now determine where we get the HTML to scrape from:
 my $url = shift @ARGV;
+die "No URL given.\n"
+    unless defined $url;
 
 my $html;
 if ($url eq '-') {
@@ -144,7 +146,7 @@ for my $item (@rows) {
     if ($item_updated =~ /$extr/) {
         $item_updated = $1;
     } else {
-        or warn "Is [$updated] a valid date?\n";
+        warn "Is [$updated] a valid date?\n";
         $item_updated = $updated;
     };
     
