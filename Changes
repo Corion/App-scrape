@@ -1,4 +1,4 @@
-0.02 to be released
+0.02 20110728
     . added scrape2rss RSS generator
     . moved scrape logic into module
 
