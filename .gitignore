@@ -4,9 +4,7 @@ Makefile.old
 *.bak
 pm_to_blib
 blib/
-WWW-Mechanize-FireFox-*
-WWW-Mechanize-FireFox-*/
-WWW-Mechanize-Firefox-*
-WWW-Mechanize-Firefox-*/
+App-scrape-*
+App-scrape-*/
 .releaserc
 cover_db
