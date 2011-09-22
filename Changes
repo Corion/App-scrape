@@ -1,4 +1,6 @@
-0.02 20110728
+0.03 20110922
+    . added pagination option to scrape2rss.pl
+0.02 20110728
     . added scrape2rss RSS generator
     . moved scrape logic into module
 
