@@ -7,7 +7,7 @@ use Pod::Usage;
 use XML::Atom::SimpleFeed;
 use Time::Piece;
 use vars qw($VERSION);
-$VERSION = '0.02';
+$VERSION = '0.03';
 
 =head1 NAME
 
