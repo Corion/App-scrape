@@ -1,6 +1,13 @@
+0.04 20120701
+    . Force all searches to be relative to the current tree. This
+      is relevant if you use the (undocumented) 'tree' option to scrape().
+    ! Don't deallocate the HTML::TreeBuilder::XPath tree if we don't
+      own it.
+
 0.03 20110922
     . added pagination option to scrape2rss.pl
-0.02 20110728
+
+0.02 20110728
     . added scrape2rss RSS generator
     . moved scrape logic into module
 
