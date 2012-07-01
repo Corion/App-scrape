@@ -99,9 +99,11 @@ sub scrape {
         if ($selector =~ s!/?\@(\w+)$!!) {
             $attr = $1;
         };
-        if ($selector !~ m!^/!) {
+        if ($selector !~ m!^\.?/!) {
             $selector = selector_to_xpath( $selector );
         };
+        # We always make the selector relative to the current node:
+        $selector = ".$selector" unless $selector =~ /^\./;
         my @nodes;
         if (! defined $attr) {
             @nodes = map { $_->as_trimmed_text } $tree->findnodes($selector);
@@ -109,7 +111,6 @@ sub scrape {
             $make_uri{ $rowidx } ||= (($known_uri{ lc $attr }) and ! $options->{no_known_uri});
             @nodes = $tree->findvalues("$selector/\@$attr");
         };
-        
         if ($make_uri{ $rowidx }) {
             @nodes = map { URI->new_abs( $_, $options->{base} )->as_string } @nodes;
         };
