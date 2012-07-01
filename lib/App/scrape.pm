@@ -64,10 +64,12 @@ sub scrape {
     my ($html, $selectors, $options) = @_;
     
     $options ||= {};
+    my $delete_tree;
     if (! ref $options->{tree}) {
         $options->{tree} = HTML::TreeBuilder::XPath->new;
         $options->{tree}->parse($html);
         $options->{tree}->eof;
+        $delete_tree = 1;
     };
     my $tree = $options->{tree};
     
@@ -134,7 +136,8 @@ sub scrape {
             } @result
     };
 
-    $tree->delete;
+    $tree->delete
+        if $delete_tree;
     @result
 };
 
