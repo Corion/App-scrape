@@ -6,7 +6,7 @@ use HTML::Selector::XPath 'selector_to_xpath';
 use Exporter 'import';
 
 use vars qw($VERSION @EXPORT_OK);
-$VERSION = '0.04';
+$VERSION = '0.05';
 
 @EXPORT_OK = qw<scrape>;
 
