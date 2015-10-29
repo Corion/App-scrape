@@ -8,3 +8,4 @@ App-scrape-*
 App-scrape-*/
 .releaserc
 cover_db
+MYMETA.*
