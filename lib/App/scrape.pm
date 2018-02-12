@@ -93,6 +93,7 @@ sub scrape {
     };
 
     my $rowidx=0;
+    my $found_max = 0;
     for my $selector (@selectors) {
         my ($attr);
         my $s = $selector;
@@ -114,26 +115,30 @@ sub scrape {
         if ($make_uri{ $rowidx }) {
             @nodes = map { URI->new_abs( $_, $options->{base} )->as_string } @nodes;
         };
+        if( $found_max < @nodes) {
+            $found_max = @nodes
+        };
         push @rows, \@nodes;
         $rowidx++;
     };
-    
+
     # Now convert the result from rows to columns
     my @result;
-    for my $idx (0.. $#{ $rows[0] }) {
-        push @result, [ map { 
+    for my $idx (0.. $found_max-1) {
+        push @result, [ map {
                 $rows[$_]->[$idx]
         } 0..$#rows ];
     };
-    
+
     # Now check what the user wants, array or hash:
     if( ref $selectors eq 'HASH') {
         @result = map {
                 my $arr = $_;
                 my $i = 0;
+                my @keys = sort { $a cmp $b } keys( %$selectors );
                 $_ = +{
-                    map { $_ => $arr->[$i++] } sort keys %$selectors
-                      };
+                    map { $_ => $arr->[$i++] } @keys
+                };
             } @result
     };
 
