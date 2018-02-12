@@ -57,6 +57,16 @@ If URL is C<->, input will be read from STDIN.
 
 =over 4
 
+=item B<--format>
+
+Output format, the default is C<csv>. Valid values are C<csv> or C<json>.
+
+=item B<--url>
+
+URL to fetch. This can be given multiple times to fetch multiple URLs in
+one run. If this is not given, the first argument on the command line will be
+taken as the only URL to be fetched.
+
 =item B<--sep>
 
 Separator character to use for columns. Default is tab.
