@@ -1,3 +1,8 @@
+0.05 20151029
+    . Remove MYMETA.* from the distribution, reported by
+      Alexandr Ciornii (CHORNY)
+    . No functional changes, no need to upgrade
+
 0.04 20120701
     . Force all searches to be relative to the current tree. This
       is relevant if you use the (undocumented) 'tree' option to scrape().

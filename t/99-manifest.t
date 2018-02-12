@@ -1,12 +1,12 @@
 use strict;
 use Test::More;
 
-# Check that MANIFEST and MANIFEST.skip are sane :
+# Check that MANIFEST and MANIFEST.SKIP are sane :
 
 use File::Find;
 use File::Spec;
 
-my @files = qw( MANIFEST MANIFEST.skip );
+my @files = qw( MANIFEST MANIFEST.SKIP );
 plan tests => scalar @files * 4 
               +1 # MANIFEST existence check
               ;
