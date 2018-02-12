@@ -5,10 +5,9 @@ use HTML::TreeBuilder::XPath;
 use HTML::Selector::XPath 'selector_to_xpath';
 use Exporter 'import';
 
-use vars qw($VERSION @EXPORT_OK);
-$VERSION = '0.06';
+our $VERSION = '0.06';
 
-@EXPORT_OK = qw<scrape>;
+our @EXPORT_OK = qw<scrape>;
 
 =head1 NAME
 
