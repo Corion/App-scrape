@@ -26,15 +26,17 @@ WriteMakefile1(
     'PREREQ_PM'     => { 
                         # the first DOM we implement
                         'HTML::TreeBuilder::XPath' => 0.10, # v0.10 for ->findvalues()
-                        'HTML::Selector::XPath' => 0,
-                        'URI' => 0,
-                        'XML::Atom::SimpleFeed' => 0, # for scrape2rss
-                        'LWP::Simple' => 0, # for page fetching
-                        'Time::Piece' => 0, # for date parsing
-                        'Exporter' => 0,
-                        'Getopt::Long' => 0,
-                        'Pod::Usage' => 0,
-                      }, # e.g., Module::Name => 1.1
+                        'HTML::Selector::XPath'    => 0,
+                        'URI'                      => 0,
+                        'XML::Atom::SimpleFeed'    => 0, # for scrape2rss
+                        'LWP::Simple'              => 0, # for page fetching
+                        'Time::Piece'              => 0, # for date parsing
+                        'Exporter'                 => 0,
+                        'Getopt::Long'             => 0,
+                        'Pod::Usage'               => 0,
+                        'List::MoreUtils'          => 0, # for JSON output
+                        'JSON'                     => 0, # for JSON output
+                      },
     ABSTRACT_FROM   => 'lib/App/scrape.pm', # retrieve abstract from module
     AUTHOR          => 'Max Maischein <corion@cpan.org>',
 );
