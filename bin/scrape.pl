@@ -1,6 +1,7 @@
 #!perl -w
 use strict;
 use App::scrape 'scrape';
+use List::MoreUtils 'zip';
 use LWP::Simple qw(get);
 use Getopt::Long;
 use Pod::Usage;
@@ -26,9 +27,24 @@ specifying CSS3 or XPath selectors.
 
     # Print links with titles, make links absolute
     scrape.pl http://perl.org a //a/@href --uri=2
-    
+
     # Print all links to JPG images, make links absolute
     scrape.pl http://perl.org a[@href=$"jpg"]
+
+    # print JSON about Amazon prices
+    scrape.pl https://www.amazon.de/dp/0321751043
+        --format json
+        --name "title" #productTitle
+        --name "price" #priceblock_ourprice
+        --name "deal" #priceblock_dealprice
+
+    # print JSON about Amazon prices for multiple products
+    scrape.pl --format json
+        --url https://www.amazon.de/dp/B01J90P010
+        --url https://www.amazon.de/dp/B01M3015CT
+        --name "title" #productTitle
+        --name "price" #priceblock_ourprice
+        --name "deal" #priceblock_dealprice
 
 =head1 DESCRIPTION
 
@@ -60,12 +76,17 @@ URIs for known attributes like C<href> and C<src>.
 =cut
 
 GetOptions(
-    'help|h' => \my $help,
-    'uri:s' => \my @make_uri,
-    'no-uri' => \my $no_known_uri,
-    'sep:s' => \my $sep,
+    'help|h'   => \my $help,
+    'uri:s'    => \my @make_uri,
+    'no-uri'   => \my $no_known_uri,
+    'sep:s'    => \my $sep,
+    'format:s' => \my $format,
+    'name:s'   => \my @column_names,
+    'url:s'    => \my @urls,
 ) or pod2usage(2);
 pod2usage(1) if $help;
+
+$format ||= 'csv';
 
 # make_uri can be a comma-separated list of columns to map
 # The index starts at one
@@ -73,34 +94,59 @@ my %make_uri = map{ $_-1 => 1 } map{ split /,/ } @make_uri;
 $sep ||= "\t";
 
 # Now determine where we get the HTML to scrape from:
-my $url = shift @ARGV;
-
-my $html;
-if ($url eq '-') {
-    # read from STDIN
-    local $/;
-    $html = <STDIN>;
-} else {
-    $html = get $url;
+if( ! @urls ) {
+    @urls = shift @ARGV;
 };
 
+my $args;
+if( 'json' eq $format ) {
+    # we need columns here
+    @column_names == @ARGV
+        or die "Different number of column names and column expressions";
 
-# now fetch all "rows" from the page. We do this once to avoid
-# fetching a page multiple times
-my @rows = scrape($html, \@ARGV, {
-    make_uri => \%make_uri,
-    no_known_uri => $no_known_uri,
-    base => $url,
-});
+    $args = +{ zip @column_names, @ARGV };
 
-for my $row (@rows) {
-    print join $sep, @$row;
-    print "\n";
+} elsif( 'csv' eq $format ) {
+    $args = \@ARGV;
+} else {
+    die "Unknown output format '$format'";
+}
+
+my @rows;
+
+for my $url ( @urls ) {
+    my $html;
+    if ($url eq '-') {
+        # read from STDIN
+        local $/;
+        $html = <STDIN>;
+    } else {
+        $html = get $url;
+    };
+
+    # now fetch all "rows" from the page. We do this once to avoid
+    # fetching a page multiple times
+    push @rows, scrape($html, $args, {
+        make_uri => \%make_uri,
+        no_known_uri => $no_known_uri,
+        base => $url,
+    });
+};
+
+if( 'json' eq $format ) {
+    require JSON;
+    print JSON::encode_json(\@rows);
+
+} else {
+    for my $row (@rows) {
+        print join $sep, @$row;
+        print "\n";
+    };
 };
 
 =head1 REPOSITORY
 
-The public repository of this module is 
+The public repository of this module is
 L<http://github.com/Corion/App-scrape>.
 
 =head1 SUPPORT
@@ -114,7 +160,7 @@ Max Maischein C<corion@cpan.org>
 
 =head1 COPYRIGHT (c)
 
-Copyright 2011-2011 by Max Maischein C<corion@cpan.org>.
+Copyright 2011-2018 by Max Maischein C<corion@cpan.org>.
 
 =head1 LICENSE
 
