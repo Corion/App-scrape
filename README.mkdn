@@ -48,6 +48,20 @@ If URL is `-`, input will be read from STDIN.
 
 # OPTIONS
 
+- **--format**
+
+    Output format, the default is `csv`. Valid values are `csv` or `json`.
+
+- **--url**
+
+    URL to fetch. This can be given multiple times to fetch multiple URLs in
+    one run. If this is not given, the first argument on the command line will be
+    taken as the only URL to be fetched.
+
+- **--name**
+
+    Name of the output column.
+
 - **--sep**
 
     Separator character to use for columns. Default is tab.
