@@ -67,6 +67,10 @@ URL to fetch. This can be given multiple times to fetch multiple URLs in
 one run. If this is not given, the first argument on the command line will be
 taken as the only URL to be fetched.
 
+=item B<--name>
+
+Name of the output column.
+
 =item B<--sep>
 
 Separator character to use for columns. Default is tab.
