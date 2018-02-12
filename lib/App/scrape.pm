@@ -24,12 +24,12 @@ specifying CSS3 or XPath selectors.
     use App::scrape 'scrape';
     use LWP::Simple 'get';
     use Data::Dumper;
-    
+
     my $html = get('http://perlmonks.org');
     my @posts = scrape(
         $html,
         ['a','a@href'],
-        { 
+        {
             absolute => [qw[href src rel]],
             base => 'http://perlmonks.org',
         },
@@ -38,11 +38,11 @@ specifying CSS3 or XPath selectors.
 
     my @posts = scrape(
         $html,
-        { 
+        {
           title => 'a',
           url   => 'a@href',
         },
-        { 
+        {
             absolute => [qw[href src rel]],
             base => 'http://perlmonks.org',
         },
@@ -62,7 +62,7 @@ L<Web::Scraper>.
 
 sub scrape {
     my ($html, $selectors, $options) = @_;
-    
+
     $options ||= {};
     my $delete_tree;
     if (! ref $options->{tree}) {
@@ -72,7 +72,7 @@ sub scrape {
         $delete_tree = 1;
     };
     my $tree = $options->{tree};
-    
+
     $options->{make_uri} ||= {};
     my %make_uri = %{$options->{make_uri}};
 
@@ -153,7 +153,7 @@ L<Web::Scraper> - the scraper inspiring this module
 
 =head1 REPOSITORY
 
-The public repository of this module is 
+The public repository of this module is
 L<http://github.com/Corion/App-scrape>.
 
 =head1 SUPPORT
