@@ -8,13 +8,18 @@ use ExtUtils::MakeMaker;
 my %module = (
     MIN_PERL_VERSION => '5.006',
     META_MERGE => {
+        "meta-spec" => { version => 2 },
         resources => {
-            repository => 'http://github.com/Corion/app-scrape',
+            repository => {
+                web => 'https://github.com/Corion/App-scrape',
+                url => 'git://github.com/Corion/App-scrape.git',
+                type => 'git',
+            }
         },
+        dynamic_config   => 0, # we promise to keep META.* up-to-date
+        x_static_install => 1, # we are pure Perl and don't do anything fancy
     },
-    #BUILD_REQUIRES => {
-    #                    'Task::Weaken' => 0, #to be sure that weaken is present
-    #},
+
     'NAME'          => 'App::scrape',
     'LICENSE'       => 'perl',
     'VERSION_FROM'  => 'lib/App/scrape.pm', # finds $VERSION
