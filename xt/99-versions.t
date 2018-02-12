@@ -7,6 +7,13 @@ use warnings;
 use strict;
 use File::Find;
 use Test::More;
+BEGIN {
+    eval 'use File::Slurp; 1';
+    if ($@) {
+        plan skip_all => "File::Slurp needed for testing";
+        exit 0;
+    };
+};
 
 plan 'no_plan';
 
@@ -15,9 +22,7 @@ my $last_version = undef;
 sub check {
       return if (! m{blib/script/}xms && ! m{\.pm \z}xms);
 
-      my $content = do { open my $fh, '<', $_ or die "Couldn't read $_: $!";
-                         local $/; <$fh>
-                    };
+      my $content = read_file($_);
 
       # only look at perl scripts, not sh scripts
       return if (m{blib/script/}xms && $content !~ m/\A \#![^\r\n]+?perl/xms);
@@ -27,6 +32,8 @@ sub check {
             fail($_);
       }
       for my $line (@version_lines) {
+            $line =~ s/^\s+//;
+            $line =~ s/\s+$//;
             if (!defined $last_version) {
                   $last_version = shift @version_lines;
                   diag "Checking for $last_version";

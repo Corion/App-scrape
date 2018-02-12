@@ -1,7 +1,7 @@
 use strict;
 use Test::More;
 
-# Check that MANIFEST and MANIFEST.SKIP are sane :
+# Check that MANIFEST and MANIFEST.skip are sane :
 
 use File::Find;
 use File::Spec;
