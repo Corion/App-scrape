@@ -112,17 +112,15 @@ if( ! @urls ) {
 };
 
 my $args;
-if( 'json' eq $format ) {
+if( @ARGV ) {
     # we need columns here
     @column_names == @ARGV
         or die "Different number of column names and column expressions";
 
     $args = +{ zip @column_names, @ARGV };
 
-} elsif( 'csv' eq $format ) {
-    $args = \@ARGV;
 } else {
-    die "Unknown output format '$format'";
+    $args = \@ARGV;
 }
 
 my @rows;
@@ -151,10 +149,9 @@ if( 'json' eq $format ) {
     print JSON::encode_json(\@rows);
 
 } else {
-    for my $row (@rows) {
-        print join $sep, @$row;
-        print "\n";
-    };
+    require Text::CSV_XS;
+    Text::CSV_XS->import('csv');
+    csv( in => \@rows, out => \*STDOUT, sep_char => $sep );
 };
 
 =head1 REPOSITORY

@@ -40,6 +40,7 @@
             "LWP::Simple" : "0",
             "List::MoreUtils" : "0",
             "Pod::Usage" : "0",
+            "Text::CSV_XS" : "0",
             "Time::Piece" : "0",
             "URI" : "0",
             "XML::Atom::SimpleFeed" : "0",
