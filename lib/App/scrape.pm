@@ -5,7 +5,7 @@ use HTML::TreeBuilder::XPath;
 use HTML::Selector::XPath 'selector_to_xpath';
 use Exporter 'import';
 
-our $VERSION = '0.06';
+our $VERSION = '0.07';
 
 our @EXPORT_OK = qw<scrape>;
 
