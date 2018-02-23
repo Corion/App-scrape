@@ -138,7 +138,16 @@ sub scrape {
                 $_ = +{
                     map { $_ => $arr->[$i++] } @keys
                 };
+                $_->{ $options->{url_field}} = $options->{base}
+                    if( $options->{url_field} );
+                $_
             } @result
+    } else {
+        if( $options->{url_field} ) {
+            for my $row (@result) {
+                unshift @$row, $options->{base};
+            };
+        };
     };
 
     $tree->delete
