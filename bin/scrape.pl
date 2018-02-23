@@ -45,57 +45,17 @@ specifying CSS3 or XPath selectors.
         --name "price" #priceblock_ourprice
         --name "deal" #priceblock_dealprice
 
-=head1 DESCRIPTION
-
-This program fetches an HTML page and extracts nodes
-matched by XPath or CSS selectors from it.
-
-If URL is C<->, input will be read from STDIN.
-
-=head1 OPTIONS
-
-=over 4
-
-=item B<--format>
-
-Output format, the default is C<csv>. Valid values are C<csv> or C<json>.
-
-=item B<--url>
-
-URL to fetch. This can be given multiple times to fetch multiple URLs in
-one run. If this is not given, the first argument on the command line will be
-taken as the only URL to be fetched.
-
-=item B<--name>
-
-Name of the output column.
-
-=item B<--sep>
-
-Separator character to use for columns. Default is tab.
-
-=item B<--uri> COLUMNS
-
-Numbers of columns to convert into absolute URIs, if the
-known attributes do not everything you want.
-
-=item B<--no-uri>
-
-Switches off the automatic translation to absolute
-URIs for known attributes like C<href> and C<src>.
-
-=back
-
 =cut
 
 GetOptions(
-    'help|h'   => \my $help,
-    'uri:s'    => \my @make_uri,
-    'no-uri'   => \my $no_known_uri,
-    'sep:s'    => \my $sep,
-    'format:s' => \my $format,
-    'name:s'   => \my @column_names,
-    'url:s'    => \my @urls,
+    'help|h'      => \my $help,
+    'uri:s'       => \my @make_uri,
+    'no-uri'      => \my $no_known_uri,
+    'sep:s'       => \my $sep,
+    'format:s'    => \my $format,
+    'name:s'      => \my @column_names,
+    'url:s'       => \my @urls,
+    'keep-url:s'  => \my $url_field,
 ) or pod2usage(2);
 pod2usage(1) if $help;
 
@@ -138,9 +98,10 @@ for my $url ( @urls ) {
     # now fetch all "rows" from the page. We do this once to avoid
     # fetching a page multiple times
     push @rows, scrape($html, $args, {
-        make_uri => \%make_uri,
+        make_uri     => \%make_uri,
         no_known_uri => $no_known_uri,
-        base => $url,
+        base         => $url,
+        url_field    => $url_field,
     });
 };
 
@@ -153,6 +114,52 @@ if( 'json' eq $format ) {
     Text::CSV_XS->import('csv');
     csv( in => \@rows, out => \*STDOUT, sep_char => $sep );
 };
+
+=head1 DESCRIPTION
+
+This program fetches an HTML page and extracts nodes
+matched by XPath or CSS selectors from it.
+
+If URL is C<->, input will be read from STDIN.
+
+=head1 OPTIONS
+
+=over 4
+
+=item B<--format>
+
+Output format, the default is C<csv>. Valid values are C<csv> or C<json>.
+
+=item B<--url>
+
+URL to fetch. This can be given multiple times to fetch multiple URLs in
+one run. If this is not given, the first argument on the command line will be
+taken as the only URL to be fetched.
+
+=item B<--keep-url>
+
+Add the fetched URL as another column with the given name in the output.
+If you use CSV output, the URL will always be in the first column.
+
+=item B<--name>
+
+Name of the output column.
+
+=item B<--sep>
+
+Separator character to use for columns. Default is tab.
+
+=item B<--uri> COLUMNS
+
+Numbers of columns to convert into absolute URIs, if the
+known attributes do not everything you want.
+
+=item B<--no-uri>
+
+Switches off the automatic translation to absolute
+URIs for known attributes like C<href> and C<src>.
+
+=back
 
 =head1 REPOSITORY
 
