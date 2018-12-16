@@ -49,13 +49,13 @@ specifying CSS3 or XPath selectors.
 
 GetOptions(
     'help|h'      => \my $help,
-    'uri:s'       => \my @make_uri,
+    'uri=s'       => \my @make_uri,
     'no-uri'      => \my $no_known_uri,
-    'sep:s'       => \my $sep,
-    'format:s'    => \my $format,
-    'name:s'      => \my @column_names,
-    'url:s'       => \my @urls,
-    'keep-url:s'  => \my $url_field,
+    'sep=s'       => \my $sep,
+    'format=s'    => \my $format,
+    'name=s'      => \my @column_names,
+    'url=s'       => \my @urls,
+    'keep-url=s'  => \my $url_field,
 ) or pod2usage(2);
 pod2usage(1) if $help;
 
