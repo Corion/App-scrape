@@ -45,6 +45,13 @@ specifying CSS3 or XPath selectors.
         --name "price" #priceblock_ourprice
         --name "deal" #priceblock_dealprice
 
+    # extract values from HTML from stdin
+    scrape.pl --format json
+        --url -
+        --name "title" #productTitle
+        --name "price" #priceblock_ourprice
+        --name "deal" #priceblock_dealprice
+
 =cut
 
 GetOptions(
