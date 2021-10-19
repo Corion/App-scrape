@@ -93,26 +93,36 @@ sub scrape {
 
     my $rowidx=0;
     my $found_max = 0;
-    for my $selector (@selectors) {
-        my ($attr);
-        my $s = $selector;
-        if ($selector =~ s!/?\@(\w+)$!!) {
-            $attr = $1;
+    for my $selectors (@selectors) {
+
+        if( ! ref $selectors ) {
+            $selectors = [$selectors];
         };
-        if ($selector !~ m!^\.?/!) {
-            $selector = selector_to_xpath( $selector );
-        };
-        # We always make the selector relative to the current node:
-        $selector = ".$selector" unless $selector =~ /^\./;
+
         my @nodes;
-        if (! defined $attr) {
-            @nodes = map { $_->as_trimmed_text } $tree->findnodes($selector);
-        } else {
-            $make_uri{ $rowidx } ||= (($known_uri{ lc $attr }) and ! $options->{no_known_uri});
-            @nodes = $tree->findvalues("$selector/\@$attr");
-        };
-        if ($make_uri{ $rowidx }) {
-            @nodes = map { URI->new_abs( $_, $options->{base} )->as_string } @nodes;
+
+        # Find the first matching selector
+        for my $selector (@$selectors) {
+            my ($attr);
+            my $s = $selector;
+            if ($selector =~ s!/?\@(\w+)$!!) {
+                $attr = $1;
+            };
+            if ($selector !~ m!^\.?/!) {
+                $selector = selector_to_xpath( $selector );
+            };
+            # We always make the selector relative to the current node:
+            $selector = ".$selector" unless $selector =~ /^\./;
+            if (! defined $attr) {
+                @nodes = map { $_->as_trimmed_text } $tree->findnodes($selector);
+            } else {
+                $make_uri{ $rowidx } ||= (($known_uri{ lc $attr }) and ! $options->{no_known_uri});
+                @nodes = $tree->findvalues("$selector/\@$attr");
+            };
+            if ($make_uri{ $rowidx }) {
+                @nodes = map { URI->new_abs( $_, $options->{base} )->as_string } @nodes;
+            };
+            last if @nodes;
         };
         if( $found_max < @nodes) {
             $found_max = @nodes
